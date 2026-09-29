@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import api from "../api";
 import PostCard from "../components/PostCard";
+import CreatePost from "../components/CreatePost";
 
 export default function Feed() {
   const { user } = useContext(AuthContext);
@@ -27,6 +28,10 @@ export default function Feed() {
 
     fetchPosts();
   }, [user]);
+
+  const handleNewPost = (newPost) => {
+    setPosts([newPost, ...posts]);
+  };
 
   if (loading) {
     return (
@@ -65,6 +70,8 @@ export default function Feed() {
 
   return (
     <div className="max-w-xl mx-auto pb-10">
+      <CreatePost onPostCreated={handleNewPost} />
+
       {posts.length === 0 ? (
         <div className="text-center text-gray-500 mt-10 bg-white p-8 rounded-lg shadow-sm border border-gray-200">
           <p className="text-lg">No posts yet.</p>
