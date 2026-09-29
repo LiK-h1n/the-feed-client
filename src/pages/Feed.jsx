@@ -5,15 +5,14 @@ import api from "../api";
 import PostCard from "../components/PostCard";
 import CreatePost from "../components/CreatePost";
 
-export default function Feed() {
+export default function Feed({ showCreate, setShowCreate }) {
   const { user } = useContext(AuthContext);
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(!!user);
+  const [activeTab, setActiveTab] = useState("recent");
 
   useEffect(() => {
-    if (!user) {
-      return;
-    }
+    if (!user) return;
 
     const fetchPosts = async () => {
       try {
@@ -31,35 +30,28 @@ export default function Feed() {
 
   const handleNewPost = (newPost) => {
     setPosts([newPost, ...posts]);
+    if (setShowCreate) setShowCreate(false);
   };
-
-  if (loading) {
-    return (
-      <div className="text-center mt-10 text-gray-500 font-medium">
-        Loading feed...
-      </div>
-    );
-  }
 
   if (!user) {
     return (
-      <div className="text-center mt-20">
-        <h2 className="text-3xl font-bold text-gray-800 mb-4">
+      <div className="text-center py-20">
+        <h2 className="text-3xl font-bold text-white mb-3">
           Welcome to //TheFeed
         </h2>
-        <p className="text-gray-600 mb-8 text-lg">
-          Log in or sign up to see what developers are sharing.
+        <p className="text-zinc-400 mb-6">
+          Log in or sign up to join the feed.
         </p>
-        <div className="flex justify-center gap-4">
+        <div className="flex justify-center gap-3">
           <Link
             to="/login"
-            className="bg-blue-600 text-white px-6 py-2 rounded font-bold hover:bg-blue-700 transition duration-200"
+            className="bg-red-500 text-white px-5 py-2 rounded-xl font-bold text-sm"
           >
             Log in
           </Link>
           <Link
             to="/signup"
-            className="bg-white text-blue-600 border border-blue-600 px-6 py-2 rounded font-bold hover:bg-gray-50 transition duration-200"
+            className="bg-zinc-800 text-white px-5 py-2 rounded-xl font-bold text-sm"
           >
             Sign up
           </Link>
@@ -69,13 +61,47 @@ export default function Feed() {
   }
 
   return (
-    <div className="max-w-xl mx-auto pb-10">
-      <CreatePost onPostCreated={handleNewPost} />
+    <div className="w-full">
+      <div className="flex items-center justify-center gap-6 border-b border-zinc-800/80 mb-6 pb-2">
+        <button
+          onClick={() => setActiveTab("recent")}
+          className={`text-sm font-bold pb-2 relative transition ${
+            activeTab === "recent"
+              ? "text-white"
+              : "text-zinc-500 hover:text-zinc-300"
+          }`}
+        >
+          Recent
+          {activeTab === "recent" && (
+            <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-red-500 rounded-full" />
+          )}
+        </button>
+        <button
+          onClick={() => setActiveTab("following")}
+          className={`text-sm font-bold pb-2 relative transition ${
+            activeTab === "following"
+              ? "text-white"
+              : "text-zinc-500 hover:text-zinc-300"
+          }`}
+        >
+          Following
+          {activeTab === "following" && (
+            <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-red-500 rounded-full" />
+          )}
+        </button>
+      </div>
 
-      {posts.length === 0 ? (
-        <div className="text-center text-gray-500 mt-10 bg-white p-8 rounded-lg shadow-sm border border-gray-200">
-          <p className="text-lg">No posts yet.</p>
-          <p className="text-sm mt-2">Be the first to share something!</p>
+      {(showCreate || activeTab === "recent") && (
+        <CreatePost onPostCreated={handleNewPost} />
+      )}
+
+      {loading ? (
+        <div className="text-center py-10 text-zinc-500 text-sm font-medium">
+          Loading feed...
+        </div>
+      ) : posts.length === 0 ? (
+        <div className="text-center text-zinc-500 py-12 bg-zinc-900/30 rounded-2xl border border-zinc-800/60">
+          <p className="text-sm">No posts yet.</p>
         </div>
       ) : (
         posts.map((post) => <PostCard key={post.id} post={post} />)

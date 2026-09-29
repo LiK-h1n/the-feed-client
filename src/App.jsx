@@ -1,63 +1,82 @@
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { AuthContext } from "./context/AuthContext";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Feed from "./pages/Feed";
+import SidebarLeft from "./components/SidebarLeft";
+import SidebarRight from "./components/SidebarRight";
 
 function App() {
   const { user, logout } = useContext(AuthContext);
+  const [showCreate, setShowCreate] = useState(false);
 
   return (
     <BrowserRouter>
-      <div className="min-h-screen bg-gray-100">
-        <nav className="bg-white shadow-sm p-4 flex justify-between items-center max-w-4xl mx-auto mb-6">
-          <Link
-            to="/"
-            className="font-bold text-2xl text-blue-600 hover:text-blue-700"
-          >
-            //TheFeed
-          </Link>
+      <div className="min-h-screen bg-[#0d0d0f] text-zinc-100 flex flex-col">
+        <header className="border-b border-zinc-800/80 bg-[#0d0d0f]/90 backdrop-blur sticky top-0 z-50">
+          <div className="max-w-7xl mx-auto px-6 h-14 flex items-center justify-between">
+            <Link
+              to="/"
+              className="flex items-center gap-1 font-extrabold text-xl text-white tracking-tight"
+            >
+              <span className="text-red-500 text-2xl">//</span>TheFeed
+            </Link>
 
-          <div>
-            {user ? (
-              <div className="flex items-center gap-4">
-                <span className="text-sm font-semibold text-gray-700">
-                  Hi, {user.displayName}
-                </span>
-                <button
-                  onClick={logout}
-                  className="bg-gray-200 text-gray-700 px-3 py-1 rounded hover:bg-gray-300 text-sm font-medium"
-                >
-                  Logout
-                </button>
-              </div>
-            ) : (
-              <div className="flex gap-4">
-                <Link
-                  to="/login"
-                  className="text-blue-600 font-medium hover:underline mt-1"
-                >
-                  Log in
-                </Link>
-                <Link
-                  to="/signup"
-                  className="bg-blue-600 text-white px-4 py-1 rounded font-medium hover:bg-blue-700"
-                >
-                  Sign up
-                </Link>
-              </div>
-            )}
+            <div>
+              {user ? (
+                <div className="flex items-center gap-3">
+                  <span className="text-xs font-medium text-zinc-400">
+                    @{user.username}
+                  </span>
+                  <div className="w-8 h-8 rounded-full bg-zinc-800 flex items-center justify-center font-bold text-xs text-white">
+                    {user.displayName?.charAt(0)}
+                  </div>
+                  <button
+                    onClick={logout}
+                    className="text-xs text-zinc-400 hover:text-white bg-zinc-800 px-3 py-1.5 rounded-lg transition"
+                  >
+                    Logout
+                  </button>
+                </div>
+              ) : (
+                <div className="flex gap-3">
+                  <Link
+                    to="/login"
+                    className="text-zinc-300 hover:text-white text-xs font-semibold mt-1"
+                  >
+                    Log in
+                  </Link>
+                  <Link
+                    to="/signup"
+                    className="bg-red-500 text-white px-3.5 py-1 rounded-lg text-xs font-semibold"
+                  >
+                    Sign up
+                  </Link>
+                </div>
+              )}
+            </div>
           </div>
-        </nav>
+        </header>
 
-        <main className="max-w-4xl mx-auto px-4">
-          <Routes>
-            <Route path="/" element={<Feed />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<Signup />} />
-          </Routes>
-        </main>
+        <div className="max-w-7xl mx-auto px-6 py-6 flex gap-8 w-full flex-1">
+          <SidebarLeft onOpenCreate={() => setShowCreate(!showCreate)} />
+
+          <main className="flex-1 max-w-xl mx-auto w-full">
+            <Routes>
+              <Route
+                path="/"
+                element={
+                  <Feed showCreate={showCreate} setShowCreate={setShowCreate} />
+                }
+              />
+              <Route path="/login" element={<Login />} />
+              <Route path="/signup" element={<Signup />} />
+            </Routes>
+          </main>
+
+          <SidebarRight />
+        </div>
       </div>
     </BrowserRouter>
   );
