@@ -4,6 +4,15 @@ import { Heart, MessageSquare } from "lucide-react";
 import { AuthContext } from "../context/AuthContext";
 import api from "../api";
 
+const extractRepoPath = (url) => {
+  try {
+    const urlObj = new URL(url);
+    return urlObj.pathname.substring(1);
+  } catch {
+    return url;
+  }
+};
+
 export default function PostCard({ post }) {
   const { user } = useContext(AuthContext);
 
@@ -47,6 +56,47 @@ export default function PostCard({ post }) {
         <p className="text-zinc-200 text-sm mb-4 leading-relaxed whitespace-pre-wrap">
           {post.body}
         </p>
+      )}
+
+      {post.repoLink && (
+        <a
+          href={post.repoLink}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="block border border-zinc-200 bg-white rounded-xl p-5 mb-4 hover:opacity-90 transition"
+        >
+          <div className="flex items-center justify-between">
+            <div>
+              <h3 className="text-2xl font-bold text-zinc-800 tracking-tight">
+                {extractRepoPath(post.repoLink)}
+              </h3>
+              <p className="text-zinc-500 text-sm mt-1">
+                Tools to bootstrap CAs, certificate requests...
+              </p>
+            </div>
+            <div className="w-16 h-16 bg-black rounded-2xl flex items-center justify-center">
+              <div className="w-6 h-6 border-4 border-white rounded-sm"></div>
+            </div>
+          </div>
+          <div className="flex items-center gap-6 mt-6 text-zinc-500 text-sm font-medium">
+            <span className="flex items-center gap-1.5">👥 Contributors</span>
+            <span className="flex items-center gap-1.5">⭐ Stars</span>
+            <span className="flex items-center gap-1.5">🍴 Forks</span>
+          </div>
+        </a>
+      )}
+
+      {post.tags && post.tags.length > 0 && (
+        <div className="flex flex-wrap gap-2 mb-4">
+          {post.tags.map((tag, idx) => (
+            <span
+              key={idx}
+              className="bg-zinc-800/60 text-zinc-400 text-xs px-2 py-1 rounded-md"
+            >
+              #{tag}
+            </span>
+          ))}
+        </div>
       )}
 
       {post.attachment && (

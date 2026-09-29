@@ -65,11 +65,11 @@ export default function SidebarRight() {
         <div className="bg-zinc-900/60 border border-zinc-800/80 rounded-2xl p-4 text-xs text-zinc-400">
           <h3 className="text-white font-bold text-sm mb-3">Announcements</h3>
           <ul className="list-disc list-inside space-y-1.5 leading-relaxed">
-            <li>Added animations to loading pages</li>
-            <li>Added Skeleton Loading to home page</li>
+            <li>Trying my best to get this thing to work 🫠</li>
+            <li>Duct tape and console.logs are holding the server together.</li>
           </ul>
           <div className="mt-4 text-zinc-500 text-[11px]">
-            Last updated: 24 Nov 2024
+            Last updated: 29 Sept 2026
           </div>
         </div>
       </div>
