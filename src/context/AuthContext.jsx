@@ -8,6 +8,8 @@ export const AuthProvider = ({ children }) => {
     const storedUser = localStorage.getItem("user");
     return storedUser ? JSON.parse(storedUser) : null;
   });
+  const [isAuthModalOpen, setAuthModalOpen] = useState(false);
+  const [authView, setAuthView] = useState("login");
 
   const login = (token, userData) => {
     localStorage.setItem("token", token);
@@ -22,7 +24,17 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        login,
+        logout,
+        isAuthModalOpen,
+        setAuthModalOpen,
+        authView,
+        setAuthView,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );
