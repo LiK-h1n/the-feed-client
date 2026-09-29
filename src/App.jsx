@@ -3,6 +3,7 @@ import { useContext } from "react";
 import { AuthContext } from "./context/AuthContext";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
+import Feed from "./pages/Feed";
 
 function App() {
   const { user, logout } = useContext(AuthContext);
@@ -52,12 +53,7 @@ function App() {
 
         <main className="max-w-4xl mx-auto px-4">
           <Routes>
-            <Route
-              path="/"
-              element={
-                <h1 className="text-center mt-10">Feed Page Coming Soon</h1>
-              }
-            />
+            <Route path="/" element={<Feed />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
           </Routes>
