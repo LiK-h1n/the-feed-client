@@ -1,15 +1,15 @@
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { AuthContext } from "./context/AuthContext";
 import Feed from "./pages/Feed";
 import SidebarLeft from "./components/SidebarLeft";
 import SidebarRight from "./components/SidebarRight";
 import AuthModal from "./components/AuthModal";
+import CreatePost from "./components/CreatePost";
 
 function App() {
   const { user, logout, setAuthModalOpen, setAuthView } =
     useContext(AuthContext);
-  const [showCreate, setShowCreate] = useState(false);
 
   return (
     <BrowserRouter>
@@ -69,16 +69,12 @@ function App() {
         </header>
 
         <div className="max-w-7xl mx-auto px-6 py-6 flex gap-8 w-full flex-1">
-          <SidebarLeft onOpenCreate={() => setShowCreate(!showCreate)} />
+          <SidebarLeft />
 
           <main className="flex-1 max-w-xl mx-auto w-full">
             <Routes>
-              <Route
-                path="/"
-                element={
-                  <Feed showCreate={showCreate} setShowCreate={setShowCreate} />
-                }
-              />
+              <Route path="/" element={<Feed />} />
+              <Route path="/create" element={<CreatePost />} />
             </Routes>
           </main>
 
