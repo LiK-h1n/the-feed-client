@@ -1,19 +1,17 @@
 import { useState, useEffect, useContext } from "react";
-import { Link } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 import api from "../api";
 import PostCard from "../components/PostCard";
 import CreatePost from "../components/CreatePost";
 
 export default function Feed({ showCreate, setShowCreate }) {
-  const { user } = useContext(AuthContext);
+  const { user, setAuthModalOpen, setAuthView } = useContext(AuthContext);
+
   const [posts, setPosts] = useState([]);
-  const [loading, setLoading] = useState(!!user);
+  const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState("recent");
 
   useEffect(() => {
-    if (!user) return;
-
     const fetchPosts = async () => {
       try {
         const response = await api.get("/posts");
@@ -26,39 +24,21 @@ export default function Feed({ showCreate, setShowCreate }) {
     };
 
     fetchPosts();
-  }, [user]);
+  }, []);
 
   const handleNewPost = (newPost) => {
     setPosts([newPost, ...posts]);
     if (setShowCreate) setShowCreate(false);
   };
 
-  if (!user) {
-    return (
-      <div className="text-center py-20">
-        <h2 className="text-3xl font-bold text-white mb-3">
-          Welcome to //TheFeed
-        </h2>
-        <p className="text-zinc-400 mb-6">
-          Log in or sign up to join the feed.
-        </p>
-        <div className="flex justify-center gap-3">
-          <Link
-            to="/login"
-            className="bg-red-500 text-white px-5 py-2 rounded-xl font-bold text-sm"
-          >
-            Log in
-          </Link>
-          <Link
-            to="/signup"
-            className="bg-zinc-800 text-white px-5 py-2 rounded-xl font-bold text-sm"
-          >
-            Sign up
-          </Link>
-        </div>
-      </div>
-    );
-  }
+  const handleFollowingTabClick = () => {
+    if (!user) {
+      setAuthView("login");
+      setAuthModalOpen(true);
+      return;
+    }
+    setActiveTab("following");
+  };
 
   return (
     <div className="w-full">
@@ -77,7 +57,7 @@ export default function Feed({ showCreate, setShowCreate }) {
           )}
         </button>
         <button
-          onClick={() => setActiveTab("following")}
+          onClick={handleFollowingTabClick}
           className={`text-sm font-bold pb-2 relative transition ${
             activeTab === "following"
               ? "text-white"
@@ -91,9 +71,7 @@ export default function Feed({ showCreate, setShowCreate }) {
         </button>
       </div>
 
-      {(showCreate || activeTab === "recent") && (
-        <CreatePost onPostCreated={handleNewPost} />
-      )}
+      {user && showCreate && <CreatePost onPostCreated={handleNewPost} />}
 
       {loading ? (
         <div className="text-center py-10 text-zinc-500 text-sm font-medium">

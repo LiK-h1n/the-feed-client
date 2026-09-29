@@ -24,8 +24,7 @@ export default function AuthModal() {
     try {
       if (authView === "login") {
         const res = await api.post("/auth/login", { email, password });
-        localStorage.setItem("token", res.data.token);
-        await login(res.data.token);
+        await login(res.data.token, res.data.user);
         setAuthModalOpen(false);
       } else {
         const res = await api.post("/auth/register", {
@@ -34,8 +33,7 @@ export default function AuthModal() {
           username,
           displayName,
         });
-        localStorage.setItem("token", res.data.token);
-        await login(res.data.token);
+        await login(res.data.token, res.data.user);
         setAuthModalOpen(false);
       }
     } catch (err) {
