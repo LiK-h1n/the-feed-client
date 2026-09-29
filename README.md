@@ -2,7 +2,7 @@
 
 <p align="center">A modern, full-stack social media MVP (Frontend Repository)</p>
 
-![preview](./public/preview_ui.png) <!-- Note: Take a screenshot of your app, name it preview_ui.png, and place it in your public folder! -->
+![preview](./public/preview_ui.png)
 
 ## Demo: [Live on Vercel](https://the-feed-client.vercel.app/)
 
