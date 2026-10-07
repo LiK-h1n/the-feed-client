@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "./context/AuthContext";
+import ProtectedRoute from "./components/ProtectedRoute";  
 import Feed from "./pages/Feed";
 import SidebarLeft from "./components/SidebarLeft";
 import SidebarRight from "./components/SidebarRight";
@@ -8,8 +9,7 @@ import AuthModal from "./components/AuthModal";
 import CreatePost from "./components/CreatePost";
 
 function App() {
-  const { user, logout, setAuthModalOpen, setAuthView } =
-    useContext(AuthContext);
+  const { user, logout, setAuthModalOpen, setAuthView } = useContext(AuthContext);
 
   return (
     <BrowserRouter>
@@ -42,26 +42,24 @@ function App() {
                 </div>
               ) : (
                 <div className="flex gap-3">
-                  <div className="flex gap-3">
-                    <button
-                      onClick={() => {
-                        setAuthView("login");
-                        setAuthModalOpen(true);
-                      }}
-                      className="text-zinc-300 hover:text-white text-xs font-semibold mt-1"
-                    >
-                      Log in
-                    </button>
-                    <button
-                      onClick={() => {
-                        setAuthView("signup");
-                        setAuthModalOpen(true);
-                      }}
-                      className="bg-red-500 text-white px-3.5 py-1 rounded-lg text-xs font-semibold"
-                    >
-                      Sign up
-                    </button>
-                  </div>
+                  <button
+                    onClick={() => {
+                      setAuthView("login");
+                      setAuthModalOpen(true);
+                    }}
+                    className="text-zinc-300 hover:text-white text-xs font-semibold mt-1"
+                  >
+                    Log in
+                  </button>
+                  <button
+                    onClick={() => {
+                      setAuthView("signup");
+                      setAuthModalOpen(true);
+                    }}
+                    className="bg-red-500 text-white px-3.5 py-1 rounded-lg text-xs font-semibold"
+                  >
+                    Sign up
+                  </button>
                 </div>
               )}
             </div>
@@ -74,7 +72,14 @@ function App() {
           <main className="flex-1 max-w-xl mx-auto w-full">
             <Routes>
               <Route path="/" element={<Feed />} />
-              <Route path="/create" element={<CreatePost />} />
+              <Route 
+                path="/create" 
+                element={
+                  <ProtectedRoute>
+                    <CreatePost />
+                  </ProtectedRoute>
+                } 
+              />
             </Routes>
           </main>
 
