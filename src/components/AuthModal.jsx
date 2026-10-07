@@ -27,7 +27,7 @@ export default function AuthModal() {
         await login(res.data.token, res.data.user);
         setAuthModalOpen(false);
       } else {
-        const res = await api.post("/auth/register", {
+        const res = await api.post("/auth/signup", {
           email,
           password,
           username,
