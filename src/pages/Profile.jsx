@@ -9,19 +9,25 @@ export default function Profile() {
   const [activity, setActivity] = useState([]);
 
   // In Profile.jsx
-useEffect(() => {
-  const fetchData = async () => {
-    try {
-      const [profileRes, activityRes] = await Promise.all([
-        api.get(`/user/profile/${username}`),
-        api.get(`/user/activity/${username}`) // Ensure this matches the route
-      ]);
-      setProfile(profileRes.data);
-      setActivity(activityRes.data);
-    } catch (err) { console.error(err); }
-  };
-  fetchData();
-}, [username]);
+  useEffect(() => {
+      const fetchData = async () => {
+        try {
+          // Encode the username to safely handle spaces and special characters
+          const safeUsername = encodeURIComponent(username);
+          
+          const [profileRes, activityRes] = await Promise.all([
+            api.get(`/user/profile/${safeUsername}`),
+            api.get(`/user/activity/${safeUsername}`) 
+          ]);
+          
+          setProfile(profileRes.data);
+          setActivity(activityRes.data);
+        } catch (err) { 
+          console.error(err); 
+        }
+      };
+      if (username) fetchData();
+    }, [username]);
 
   if (!profile) return <div className="text-zinc-500 p-10 text-center">Loading Pulse...</div>;
 

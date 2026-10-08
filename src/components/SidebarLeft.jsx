@@ -16,9 +16,7 @@ export default function SidebarLeft() {
     { label: "Users", icon: Users, path: "/users", protected: false },
     { label: "Message", icon: MessageSquare, path: "/messages", protected: true },
     { label: "Likes", icon: Heart, path: "/likes", protected: true }, 
-     {
-      label: "Profile", icon: User, path: user ? `/profile/${user.username}` : "/login", protected: true
-    } ,
+    { label: "Profile", icon: User, path: user ? `/profile/${user.username}` : "/login", protected: true},
     { label: "Settings", icon: Settings, path: "/settings", protected: false },
    
   ];
