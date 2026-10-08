@@ -14,8 +14,10 @@
     "axios": "^1.20.0",
     "lucide-react": "^1.48.0",
     "react": "^19.2.8",
+    "react-calendar-heatmap": "^1.10.0",
     "react-dom": "^19.2.8",
-    "react-router-dom": "^7.18.4"
+    "react-router-dom": "^7.18.4",
+    "react-tooltip": "^6.0.8"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

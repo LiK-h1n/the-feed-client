@@ -4,18 +4,23 @@ import { AuthContext } from "../context/AuthContext";
 import { Home, PlusCircle, Users, MessageSquare, Heart, User, Settings } from "lucide-react";
 
 export default function SidebarLeft() {
+  // const { user } = useContext(AuthContext);
   const location = useLocation();
   const navigate = useNavigate();
   const { user, setAuthModalOpen, setAuthView } = useContext(AuthContext);
+  console.log("user from : " , user)
 
   const navItems = [
     { label: "Home", icon: Home, path: "/", protected: false },
     { label: "Create", icon: PlusCircle, path: "/create", protected: true },
     { label: "Users", icon: Users, path: "/users", protected: false },
     { label: "Message", icon: MessageSquare, path: "/messages", protected: true },
-    { label: "Likes", icon: Heart, path: "/likes", protected: true },
-    { label: "Profile", icon: User, path: "/profile", protected: true },
+    { label: "Likes", icon: Heart, path: "/likes", protected: true }, 
+     {
+      label: "Profile", icon: User, path: user ? `/profile/${user.username}` : "/login", protected: true
+    } ,
     { label: "Settings", icon: Settings, path: "/settings", protected: false },
+   
   ];
 
   const handleNavClick = (e, item) => {
